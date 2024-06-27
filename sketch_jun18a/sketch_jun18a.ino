@@ -3,7 +3,7 @@
 #include <Adafruit_GFX.h> 
 #include <Adafruit_SSD1306.h>
 #include <DHT11.h>
-
+  
 Adafruit_SSD1306 display = Adafruit_SSD1306(128, 64, &Wire);//新建显示屏对象
 DHT11 dht11_air(12);    // dht11 (air sensor)
 DHT11 dht11_plate(13);  // dht11 (plate sensor)
