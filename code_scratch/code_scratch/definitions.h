@@ -18,6 +18,7 @@ int temp_cases;
 void temp_control();
 void heat();
 void cool();
+void PID_control();
 
 double Kp = 2, Ki = 5, Kd = 1; //For PID
 
