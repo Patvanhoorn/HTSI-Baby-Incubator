@@ -1,27 +1,38 @@
-#define heat_supply 8
-#define fan1 9
-#define fan2 10
-#define humidifier 11
-#define moisture_sensor 13
-#define TEST_LED 2
-#define TEMP_PID 3
-
+#define TEMP_PID 3    // control mosfet voltage
+#define fans 4        // always on during heating or cooling
+#define heating 5     // first relay
+#define cooling 6     // second relay
+#define thermoregulation 7 // third relay
+#define humidifier 8  // fourth relay
+// DHT11 pin 12
+#define moisture_sensor 13  // always on
 
 
 int humidity;
 int temperature;
 int result;
-int temperature_ref = 37;
+int temperature_ref = 37; // reference temp
 int temp_cases;
+
+//For PID
+int kp = 2, ki = 5, kd = 1; 
+
+float PID_error = 0;
+float previous_error = 0;
+float elapsedTime, Time, timePrev;
+float PID_value = 0;
+
+int PID_p = 0;    int PID_i = 0;    int PID_d = 0;
+float last_kp = 0;
+float last_ki = 0;
+float last_kd = 0;
+int PID_values_fixed =0;
 
 
 void temp_control();
 void heat();
 void cool();
 void PID_control();
-
-double Kp = 2, Ki = 5, Kd = 1; //For PID
-
 
 
 void sensor_read();
