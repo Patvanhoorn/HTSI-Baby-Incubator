@@ -1,27 +1,12 @@
 #include <DHT11.h>
 #include <Ticker.h>
 #include "definitions.h"
+#include <PID_v2.h>
 
 
 DHT11 dht11(12); //DHT pin 12
-
+PID_v2 myPID(Kp, Ki, Kd, PID::Direct);// For PID
 Ticker printSensors(sensor_read,1); //Ticker
-
-void sensor_read(){
-  if (result == 0) {
-        Serial.print("Temperature: ");  //Print sensor readings
-        Serial.print(temperature);
-        Serial.print(" °C\tHumidity: ");
-        Serial.print(humidity);
-        Serial.println(" %");
-        } 
-  if (result == DHT11::ERROR_CHECKSUM && result == DHT11::ERROR_TIMEOUT) {
-        // Print error message based on the error code.
-    Serial.print("Here");
-    Serial.println(DHT11::getErrorString(result));
-    }
-}
-
 
 void setup() {
   // put your setup code here, to run once:
@@ -32,7 +17,6 @@ pinMode(humidifier, OUTPUT);
 pinMode(moisture_sensor, INPUT);
 pinMode(TEST_LED,OUTPUT);
 
-
 int temp = dht11.readTemperature();  //Get an initial value
 int humi = dht11.readHumidity();
 
@@ -42,16 +26,14 @@ Serial.begin(9600);
 Serial.println("Setting Up");
 }
 
-
-
-
-
 void loop() {
   // put your main code here, to run repeatedly:
+  //Add a time since last reading 
   result = dht11.readTemperatureHumidity(temperature, humidity); //Read values
   printSensors.update(); //Update ticker
-  delay(5000);
   digitalWrite(fan1, HIGH);
   digitalWrite(fan2, HIGH);
+  digitalWrite(11, HIGH);
+  digitalWrite(8, HIGH);
 }
 
