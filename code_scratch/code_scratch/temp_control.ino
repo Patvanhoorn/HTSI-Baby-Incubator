@@ -56,6 +56,16 @@ void PID_control(){
   //Since we activate the MOSFET with a 0 to the base of the BJT, we write 255-PID value (inverted)
   analogWrite(TEMP_PID,PID_value);
   previous_error = PID_error;     //Remember to store the previous error for next loop.
+
+  if (steady_state_temp = true) {
+    if (abs(PID_error) >= 3) {
+      printSensors.pause();   // pause the ticker
+      // set off alarm
+      digitalWrite()// turn off peltier
+      // keep fans on
+    }
+  }
+
 }
 
 void heat(){
@@ -69,3 +79,7 @@ void cool(){
   digitalWrite(heating, LOW); 
   digitalWrite(cooling, HIGH);
 }
+
+
+
+

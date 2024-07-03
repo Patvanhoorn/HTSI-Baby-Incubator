@@ -12,7 +12,10 @@ int humidity;
 int temperature;
 int result;
 int temperature_ref = 37; // reference temp
+int humidity_ref = 75;
 int temp_cases;
+bool steady_state_temp = false;
+bool steady_state_humidity = false;
 
 //For PID
 int kp = 2, ki = 5, kd = 1; 
