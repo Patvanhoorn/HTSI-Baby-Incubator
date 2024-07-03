@@ -1,3 +1,4 @@
+#define DHTPIN 2 
 #define TEMP_PID 3    // control mosfet voltage
 #define fans 4        // always on during heating or cooling
 #define heating 5     // first relay
@@ -5,9 +6,12 @@
 #define thermoregulation 7 // third relay
 #define humidifier 8  // fourth relay
 // DHT11 pin 12
+#define DHTTYPE    DHT22 
 #define moisture_sensor 13  // always on
 
 
+
+bool dhterror = false;
 int humidity;
 int temperature;
 int result;
@@ -32,10 +36,10 @@ float last_kd = 0;
 int PID_values_fixed =0;
 
 
-void temp_control();
+//void temp_control();
 void heat();
 void cool();
 void PID_control();
 
 
-void sensor_read();
+void readSensor();
