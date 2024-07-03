@@ -11,8 +11,8 @@ void readSensor(){
         // Print error message based on the error code.
         Serial.println(DHT11::getErrorString(result)); 
     }*/
-sensors_event_t event;
-dht.temperature().getEvent(&event);
+  sensors_event_t event;
+  dht.temperature().getEvent(&event);
   if (isnan(event.temperature)) {
     Serial.println(F("Error reading temperature!"));
   }
@@ -40,4 +40,11 @@ dht.temperature().getEvent(&event);
   else{
     dhterror = false;
   }
+
+  if (steady_state_temp = false) {
+    if (temperature = temperature_ref) {
+      steady_state_temp = true
+    }
+  }
+
 }
