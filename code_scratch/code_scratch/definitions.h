@@ -17,21 +17,21 @@
 
 // Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
 #define OLED_RESET     4 // Reset pin # (or -1 if sharing Arduino reset pin)
-Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+
 
 
 bool dhterror = false;
 int humidity;
 float temperature;
 int result;
-float temperature_ref = 37; // reference temp
+float temperature_ref = 28; // reference temp
 int humidity_ref = 75;
 int temp_cases;
 bool steady_state_temp = false;
 bool steady_state_humidity = false;
 
 //For PID
-int kp = 2, ki = 5, kd = 1; 
+int kp = 2, ki = 5, kd = 1;
 
 float PID_error = 0;
 float previous_error = 0;

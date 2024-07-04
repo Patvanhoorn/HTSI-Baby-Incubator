@@ -21,7 +21,8 @@ void readSensor(){
   dht.temperature().getEvent(&event);
   if (isnan(event.temperature)) {
     Serial.println(F("Error reading temperature!"));
-    display.println("Error reading temperature!");
+    // display.println("Error reading temperature!");
+    display.println("Error1");
     dhterror = true;
   }
   else {
@@ -31,7 +32,7 @@ void readSensor(){
     Serial.println(F("°C"));
 
     display.print("Temperature: ");
-    display.print(temperature);
+    display.print(float(temperature));
     display.drawCircle(111, 2, 1.75, WHITE);
     display.println(" C");
   }
@@ -39,8 +40,9 @@ void readSensor(){
   dht.humidity().getEvent(&event);
   if (isnan(event.relative_humidity)) {
     Serial.println(F("Error reading humidity!"));
-    display.println("Error reading humidity!");
+    // display.println("Error reading humidity!");
     dhterror = true;
+    display.println("Error2");
   }
   else {
     Serial.print(F("Humidity: "));
@@ -49,11 +51,12 @@ void readSensor(){
     Serial.println(F("%"));
 
     display.print("Humidity: ");
-    display.print(humidity);
-    display.println("%\n");
+    display.print(int(humidity));
+    display.println("%");
   } 
-  if (dhterror = false){
+  if (dhterror == false){
     PID_control();
+    Serial.println("entering PID control");
   }
   else{
     dhterror = false;

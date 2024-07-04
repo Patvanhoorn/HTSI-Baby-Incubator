@@ -15,6 +15,7 @@
 
 Ticker sensorRead(readSensor, 2000);
 DHT_Unified dht(DHTPIN, DHTTYPE);
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 void setup() {
   // put your setup code here, to run once:
