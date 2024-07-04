@@ -24,7 +24,7 @@ bool dhterror = false;
 int humidity;
 float temperature;
 int result;
-float temperature_ref = 28; // reference temp
+float temperature_ref = 37; // reference temp
 int humidity_ref = 75;
 int temp_cases;
 bool steady_state_temp = false;
