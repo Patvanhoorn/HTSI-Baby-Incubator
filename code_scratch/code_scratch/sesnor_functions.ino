@@ -30,6 +30,8 @@ void readSensor(){
     Serial.print(event.temperature);
     temperature = event.temperature;
     Serial.println(F("°C"));
+    Serial.print("TempTime: ");
+    Serial.println(Time);
 
     display.print("Temperature: ");
     display.print(float(temperature));
@@ -49,6 +51,8 @@ void readSensor(){
     humidity = event.relative_humidity;
     Serial.print(event.relative_humidity);
     Serial.println(F("%"));
+    Serial.print("HumTime: ");
+    Serial.println(Time);
 
     display.print("Humidity: ");
     display.print(int(humidity));

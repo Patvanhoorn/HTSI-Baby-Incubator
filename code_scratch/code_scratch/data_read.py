@@ -2,6 +2,7 @@
 import time
 import keyboard
 import serial
+import pandas
 
 #Intialising the connection to the serial port
 port_name = 'com3'
@@ -22,6 +23,8 @@ arduinoData.flush()
 
 temperature = []
 humidity = []
+TempTime = []
+HumTime = []
 end_read = False
 
 #functions
@@ -32,12 +35,17 @@ def readData():
     datapacket_list  = dataPacket.split()
     print(dataPacket)
     if dataPacket.startswith('Temperature'):
-        temp_value = float(dataPacket.split(':')[1].strip('C'))
+        temp_value = float(dataPacket.split(':')[1].strip('°C'))
         temperature.append(temp_value)
     elif dataPacket.startswith('Humidity'):
         humidity_value = float(dataPacket.split(':')[1].strip('%'))
         humidity.append(humidity_value)
-
+    elif dataPacket.startswith('TempTime'):
+        temp_time = int(dataPacket.split(':')[1])
+        print(temp_time)
+    elif dataPacket.startswith('HumTime'):
+        hum_time = int(dataPacket.split(':'))
+        print(hum_time)
 
 
 while end_read == False:
