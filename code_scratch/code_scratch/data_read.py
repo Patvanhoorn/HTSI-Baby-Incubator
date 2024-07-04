@@ -1,7 +1,6 @@
 #Modules to import
 import time
 import serial
-import numpy as np
 
 #Intialising the connection to the serial port
 port_name = 'com3'
@@ -18,3 +17,13 @@ except serial.SerialException:
 arduinoData = serial.Serial(port_name,baud_rate)
 time.sleep(2)
 arduinoData.flush()
+
+def readData():
+    dataPacket = arduinoData.readline()
+
+    print(dataPacket)
+
+while True:
+    while(arduinoData.inWaiting() == 0):
+        pass
+    readData()
