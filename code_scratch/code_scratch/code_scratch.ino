@@ -13,28 +13,34 @@ DHT_Unified dht(DHTPIN, DHTTYPE);
 
 void setup() {
   // put your setup code here, to run once:
-pinMode(TEMP_PID, OUTPUT);
-pinMode(fans, OUTPUT);
-pinMode(heating, OUTPUT);
-pinMode(cooling, OUTPUT);
-pinMode(thermoregulation, OUTPUT); //Define all pins
-pinMode(humidifier, OUTPUT);
-pinMode(moisture_sensor, INPUT);
+  pinMode(TEMP_PID, OUTPUT);
+  pinMode(fans, OUTPUT);
+  pinMode(heating, OUTPUT);
+  pinMode(cooling, OUTPUT);
+  pinMode(thermoregulation, OUTPUT); //Define all pins
+  pinMode(humidifier, OUTPUT);
+  pinMode(moisture_sensor, INPUT);
 
-dht.begin();
-sensor_t sensor;
-dht.temperature().getSensor(&sensor);
+  dht.begin();
+  sensor_t sensor;
+  dht.temperature().getSensor(&sensor);
 
 
-TCCR2B = (TCCR2B & B11111000) | 0x03;    // pin 3 PWM frequency of 928.5 Hz -- brackets added to exclude pin 11
-Time = millis();
+  TCCR2B = (TCCR2B & B11111000) | 0x03;    // pin 3 PWM frequency of 928.5 Hz -- brackets added to exclude pin 11
+  Time = millis();
 
-sensorRead.start(); //Start the ticker for sensor printing
+  sensorRead.start(); //Start the ticker for sensor printing
 
-Serial.begin(9600);
-Serial.println("Setting Up");
+  Serial.begin(9600);
+  Serial.println("Setting Up");
 
-delay(2000);  
+  // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
+  if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { // Address 0x3D for 128x64
+    Serial.println(F("SSD1306 allocation failed"));
+    for(;;); // Don't proceed, loop forever
+  }
+
+  delay(2000);  
 }
 
 void loop() {

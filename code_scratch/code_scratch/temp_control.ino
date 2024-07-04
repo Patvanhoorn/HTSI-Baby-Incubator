@@ -55,7 +55,7 @@ void PID_control(){
   //Now we can write the PWM signal to the mosfet on digital pin D3
   //Since we activate the MOSFET with a 0 to the base of the BJT, we write 255-PID value (inverted)
   analogWrite(TEMP_PID,PID_value);
-  previous_error = PID_error;     //Remember to store the previous error for next loop.
+  previous_error = PID_error;     //Remember to store the previous error for next loop.     // print pid val
 
   if (steady_state_temp = true) {
     if (abs(PID_error) >= 3) {
@@ -72,6 +72,8 @@ void heat(){
   digitalWrite(thermoregulation, LOW);
   digitalWrite(cooling, LOW);
   digitalWrite(heating, HIGH);
+
+  // display.print("Heating ")
 }
 
 void cool(){

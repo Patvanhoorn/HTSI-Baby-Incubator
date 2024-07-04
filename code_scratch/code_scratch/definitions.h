@@ -1,14 +1,27 @@
 #define DHTPIN 2 
 #define TEMP_PID 3    // control mosfet voltage
-#define fans 4        // always on during heating or cooling
-#define heating 5     // first relay
-#define cooling 6     // second relay
-#define thermoregulation 7 // third relay
-#define humidifier 8  // fourth relay
+#define fans 4        // relay 5, always on during heating or cooling
+#define heating 5     // relay 1
+#define cooling 6     // relay 2
+#define thermoregulation 7 // relay 3
+#define humidifier 8  // relay 4
 // DHT11 pin 12
 #define DHTTYPE    DHT22 
 #define moisture_sensor 13  // always on
 
+// for oled
+#include <SPI.h>
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+
+// Oled display size
+#define SCREEN_WIDTH 128 // OLED display width, in pixels
+#define SCREEN_HEIGHT 64 // OLED display height, in pixels
+
+// Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
+#define OLED_RESET     4 // Reset pin # (or -1 if sharing Arduino reset pin)
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 
 bool dhterror = false;
