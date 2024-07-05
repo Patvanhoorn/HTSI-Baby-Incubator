@@ -47,7 +47,7 @@ void PID_control(){
     PID_value = 255;}
     cool();
   }
-  if(PID_value > 0){
+  else {
     if (PID_value > 255){
     PID_value = 255;}
     heat();
@@ -65,21 +65,25 @@ void PID_control(){
 //       // keep fans on
 //     }
 //   }
-
- }
+  display.print("Error: ");
+  display.println(PID_error);
+  display.print("Analog value: ");
+  display.println(PID_value);
+}
 
 void heat(){
   digitalWrite(thermoregulation, LOW);
   digitalWrite(cooling, LOW);
   digitalWrite(heating, HIGH);
-
-  // display.print("Heating ")
+  display.println("Heating ON");
 }
 
 void cool(){
   digitalWrite(thermoregulation, HIGH);
   digitalWrite(heating, LOW); 
   digitalWrite(cooling, HIGH);
+  display.println("Cooling ON");
+
 }
 
 
