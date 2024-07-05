@@ -6,14 +6,10 @@
 #define thermoregulation 7 // relay 3
 #define humidifier 8  // relay 4
 // DHT11 pin 12
-#define DHTTYPE    DHT22 
+#define DHTTYPE    DHT22  //Pin 2
 #define moisture_sensor 13  // always on
 
-// for oled
-#include <SPI.h>
-#include <Wire.h>
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
+
 
 // Oled display size
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
@@ -26,9 +22,9 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 bool dhterror = false;
 int humidity;
-int temperature;
+float temperature;
 int result;
-int temperature_ref = 37; // reference temp
+float temperature_ref = 37; // reference temp
 int humidity_ref = 75;
 int temp_cases;
 bool steady_state_temp = false;

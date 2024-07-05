@@ -57,16 +57,16 @@ void PID_control(){
   analogWrite(TEMP_PID,PID_value);
   previous_error = PID_error;     //Remember to store the previous error for next loop.     // print pid val
 
-  if (steady_state_temp = true) {
-    if (abs(PID_error) >= 3) {
-      printSensors.pause();   // pause the ticker
-      // set off alarm
-      digitalWrite()// turn off peltier
-      // keep fans on
-    }
-  }
+//   if (steady_state_temp = true) {
+//     if (abs(PID_error) >= 3) {
+//       printSensors.pause();   // pause the ticker
+//       // set off alarm
+//       digitalWrite()// turn off peltier
+//       // keep fans on
+//     }
+//   }
 
-}
+ }
 
 void heat(){
   digitalWrite(thermoregulation, LOW);

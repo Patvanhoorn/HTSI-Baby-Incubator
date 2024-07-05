@@ -11,7 +11,7 @@ void readSensor(){
         // Print error message based on the error code.
         Serial.println(DHT11::getErrorString(result)); 
     }*/
-  
+  display.display(); 
   display.clearDisplay(); 
   display.setTextSize(1);      // Normal 1:1 pixel scale 
   display.setTextColor(SSD1306_WHITE); // Draw white text 
@@ -22,6 +22,7 @@ void readSensor(){
   if (isnan(event.temperature)) {
     Serial.println(F("Error reading temperature!"));
     display.println("Error reading temperature!");
+    dhterror = true;
   }
   else {
     Serial.print(F("Temperature: "));
@@ -31,23 +32,22 @@ void readSensor(){
 
     display.print("Temperature: ");
     display.print(temperature);
-    display.drawCircle(92, 2, 1.75, WHITE);
+    display.drawCircle(111, 2, 1.75, WHITE);
     display.println(" C");
   }
   // Get humidity event and print its value.
   dht.humidity().getEvent(&event);
   if (isnan(event.relative_humidity)) {
-    humidity = event.relative_humidity;
     Serial.println(F("Error reading humidity!"));
     display.println("Error reading humidity!");
+    dhterror = true;
   }
   else {
     Serial.print(F("Humidity: "));
+    humidity = event.relative_humidity;
     Serial.print(event.relative_humidity);
     Serial.println(F("%"));
-    dhterror = true;
 
-    int humidity = 75;
     display.print("Humidity: ");
     display.print(humidity);
     display.println("%\n");
@@ -61,7 +61,7 @@ void readSensor(){
 
   if (steady_state_temp = false) {
     if (temperature = temperature_ref) {
-      steady_state_temp = true
+      steady_state_temp = true;
     }
   }
 
