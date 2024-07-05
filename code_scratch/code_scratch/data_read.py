@@ -1,5 +1,6 @@
 #Modules to import
 import time
+import keyboard
 import serial
 
 #Intialising the connection to the serial port
@@ -19,6 +20,10 @@ time.sleep(2)
 arduinoData.flush()
 
 
+temperature = []
+humidity = []
+end_read = False
+
 #functions
 def readData():
     dataPacket = arduinoData.readline()
@@ -26,8 +31,21 @@ def readData():
     dataPacket = dataPacket.strip('\r\n')
     datapacket_list  = dataPacket.split()
     print(dataPacket)
+    if dataPacket.startswith('Temperature'):
+        temp_value = float(dataPacket.split(':')[1].strip('C'))
+        temperature.append(temp_value)
+    elif dataPacket.startswith('Humidity'):
+        humidity_value = float(dataPacket.split(':')[1].strip('%'))
+        humidity.append(humidity_value)
 
-while True:
+
+
+while end_read == False:
     while(arduinoData.inWaiting() == 0):
         pass
     readData()
+    if keyboard.is_pressed('t'):
+        end_read = True
+    
+print("Temperature list:", temperature)
+print("Humidity list:", humidity)
