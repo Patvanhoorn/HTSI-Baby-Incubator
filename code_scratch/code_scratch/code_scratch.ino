@@ -1,35 +1,34 @@
-#include "definitions.h"
-#include <Ticker.h>
-#include <Adafruit_Sensor.h>
-#include <DHT.h>
+#include "definitions.h" //Importing the header file
+#include <Ticker.h> //For the tickers
+#include <Adafruit_Sensor.h> 
+
+#include <DHT.h> //For the DHT snesors <DHT sensor library by Adafruit v1.4.6>
 #include <DHT_U.h>
-// for oled
+
+// For OLED
 #include <SPI.h>
 #include <Wire.h>
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
-//#include <PID_v2.h>
-//This is going to git!!!
+#include <Adafruit_GFX.h> //<Adafruit GFX Library by Adafruit v1.11.9>
+#include <Adafruit_SSD1306.h>// <Adafruit SSD1306 by Adafruit v2.5.10>
 
-//PID_v2 myPID(Kp, Ki, Kd, PID::Direct);// For PID
-
-Ticker sensorRead(readSensor, 2000);
-DHT_Unified dht(DHTPIN, DHTTYPE);
-Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+Ticker sensorRead(readSensor, 2000);  //Ticker to avoid delay functions
+DHT_Unified dht(DHTPIN, DHTTYPE); //Temperature Sensor
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET); //Screen 
 
 void setup() {
   // put your setup code here, to run once:
-  pinMode(TEMP_PID, OUTPUT);
+  pinMode(TEMP_PID, OUTPUT); //Define all pins 
   pinMode(fans, OUTPUT);
   pinMode(heating, OUTPUT);
   pinMode(cooling, OUTPUT);
-  pinMode(thermoregulation, OUTPUT); //Define all pins
+  pinMode(thermoregulation, OUTPUT); 
   pinMode(humidifier, OUTPUT);
   pinMode(moisture_sensor, INPUT);
 
+  //Using the DHT library
   dht.begin();
   sensor_t sensor;
-  dht.temperature().getSensor(&sensor);
+  dht.temperature().getSensor(&sensor); 
 
 
   TCCR2B = (TCCR2B & B11111000) | 0x03;    // pin 3 PWM frequency of 928.5 Hz -- brackets added to exclude pin 11
@@ -37,6 +36,7 @@ void setup() {
 
   sensorRead.start(); //Start the ticker for sensor printing
 
+  //Setting up serial communication.
   Serial.begin(9600);
   Serial.println("Setting Up");
 

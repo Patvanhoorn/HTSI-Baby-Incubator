@@ -20,7 +20,7 @@
 
 
 
-bool dhterror = false;
+bool dhterror = false; //Boolean check for whether data was read correctly or not
 int humidity;
 float temperature;
 int result;
@@ -31,7 +31,7 @@ bool steady_state_temp = false;
 bool steady_state_humidity = false;
 
 //For PID
-int kp = 2, ki = 5, kd = 1;
+int kp = 50, ki = 0, kd = 0;
 
 float PID_error = 0;
 float previous_error = 0;
@@ -44,11 +44,7 @@ float last_ki = 0;
 float last_kd = 0;
 int PID_values_fixed =0;
 
-
-//void temp_control();
 void heat();
 void cool();
 void PID_control();
-
-
 void readSensor();

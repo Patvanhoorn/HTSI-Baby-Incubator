@@ -1,16 +1,5 @@
 void readSensor(){
- /* result = dht11.readTemperatureHumidity(temperature, humidity); //Read values
-    if (result == 0) {
-      Serial.print("Temperature: ");
-      Serial.print(temperature);
-      Serial.print(" °C\tHumidity: ");
-      Serial.print(humidity);
-      Serial.println(" %");
-      PID_control();
-    } else {
-        // Print error message based on the error code.
-        Serial.println(DHT11::getErrorString(result)); 
-    }*/
+  //Set the display up
   display.display(); 
   display.clearDisplay(); 
   display.setTextSize(1);      // Normal 1:1 pixel scale 
@@ -65,14 +54,6 @@ void readSensor(){
   else{
     dhterror = false;
   }
-
-  if (steady_state_temp = false) {
-    if (temperature = temperature_ref) {
-      steady_state_temp = true;
-    }
-  }
-
   // Display image 
   display.display(); 
-
 }
