@@ -1,39 +1,27 @@
 void readSensor(){
-  //Set the display up
-  display.display(); 
-  display.clearDisplay(); 
-  display.setTextSize(1);      // Normal 1:1 pixel scale 
-  display.setTextColor(SSD1306_WHITE); // Draw white text 
-  display.setCursor(0, 0);     // Start at top-left corner 
 
-  sensors_event_t event;
-  dht.temperature().getEvent(&event);
+sensors_event_t event;
+// Get temperature event and print its value if there is no error.
+dht.temperature().getEvent(&event); 
+
   if (isnan(event.temperature)) {
     Serial.println(F("Error reading temperature!"));
-    // display.println("Error reading temperature!");
-    display.println("Error1");
-    dhterror = true;
+    dhterror = true; //Set error bool
   }
   else {
     Serial.print(F("Temperature: "));
     Serial.print(event.temperature);
-    temperature = event.temperature;
+    temperature = event.temperature; //Update temperature variable
     Serial.println(F("°C"));
     Serial.print("TempTime: ");
     Serial.println(Time);
-
-    display.print("Temperature: ");
-    display.print(float(temperature));
-    display.drawCircle(111, 2, 1.75, WHITE);
-    display.println(" C");
   }
-  // Get humidity event and print its value.
-  dht.humidity().getEvent(&event);
+
+// Get humidity event and print its value if there is no error.
+dht.humidity().getEvent(&event);
   if (isnan(event.relative_humidity)) {
     Serial.println(F("Error reading humidity!"));
-    // display.println("Error reading humidity!");
     dhterror = true;
-    display.println("Error2");
   }
   else {
     Serial.print(F("Humidity: "));
@@ -42,18 +30,29 @@ void readSensor(){
     Serial.println(F("%"));
     Serial.print("HumTime: ");
     Serial.println(Time);
-
-    display.print("Humidity: ");
-    display.print(int(humidity));
-    display.println("%");
   } 
+  tempSensor.requestTemperatures();
+  skin_temperature = tempSensor.getTempC(thermometerAddress);
+  Serial.print("Skin temperature");
+  Serial.print(skin_temperature);
+  Serial.print("°");
+  Serial.println("C  ");
+
   if (dhterror == false){
+    Serial.println("Updating PID and Display");
     PID_control();
-    Serial.println("entering PID control");
+    display_update();
+    error_counter = 0; //Set the successive error count to 0
   }
+  
   else{
+    error_counter = error_counter + 1;
     dhterror = false;
+    if (error_counter >= 5){ //If the error has occured 5 or more times in a row, display an error.
+      display_error();
+    }
   }
-  // Display image 
-  display.display(); 
+
+
+
 }

@@ -26,25 +26,29 @@ void PID_control(){
   //Now we can write the PWM signal to the mosfet on digital pin D3
   analogWrite(TEMP_PID,PID_value);
   previous_error = PID_error;  //Remember to store the previous error for next loop.
-
+/*
   display.print("Error: ");
   display.println(PID_error);
   display.print("Analog value: ");
-  display.println(PID_value);
+  display.println(PID_value);*/
 }
 
 void heat(){
   digitalWrite(thermoregulation, LOW);
   digitalWrite(cooling, LOW);
   digitalWrite(heating, HIGH);
-  display.println("Heating ON");
+  //display.println("Heating ON"); 
+  bool heater = true;
+  bool cooler = false;
 }
 
 void cool(){
   digitalWrite(thermoregulation, HIGH);
   digitalWrite(heating, LOW); 
   digitalWrite(cooling, HIGH);
-  display.println("Cooling ON");
+  //  display.println("Cooling ON");
+bool heater = false;
+bool cooler = true;
 
 }
 
