@@ -16,10 +16,11 @@
 
 #include "MAX30100_PulseOximeter.h" //<MAX30100_milan v1.3.0>
 
-Ticker sensorRead(readSensor, 2000);  //Ticker to avoid delay functions
-Ticker humControl(humidityControl, 5000); // changing led every 500ms
+Ticker sensorRead(readSensor, 2100);  //Ticker to avoid delay functions
+Ticker humControl(humidityControl, 4900); // changing led every 500ms
 Ticker displayUpdate(display_update, 10000);
-Ticker babyStats(oximeter,500);
+Ticker babyStats(oximeter,450);
+Ticker errorLEDs(register_update,4500);
 // Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET); //Screen  setup big
 Adafruit_SSD1306 display2(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET); //Screen  setup small
@@ -34,7 +35,7 @@ PulseOximeter pox;
 void setup() {
 //Setting up serial communication.
   Serial.begin(9600);
-  Serial.println("Setting Up");
+  Serial.println(F("Setting Up"));
 
 // put your setup code here, to run once:
   pinMode(padHeat, OUTPUT);
@@ -55,6 +56,7 @@ void setup() {
   humControl.start(); //Start the ticker for humidity control
   displayUpdate.start(); //Start the ticker of display updates
   babyStats.start(); //Start the  ticker for oximeter updates
+  errorLEDs.start(); //Start the register ticker
 
   if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { // Address 0x3D for 128x64 SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
     Serial.println(F("SSD1306 big allocation failed"));
@@ -65,26 +67,26 @@ void setup() {
     for(;;); // Don't proceed, loop forever
   }
 
-  Serial.println("DS18B20 Temperature IC Test");
-  Serial.println("Locating devices...");
+  Serial.println(F("DS18B20 Temperature IC Test"));
+  Serial.println(F("Locating devices..."));
   skintempSensor.begin();                         // initialize the temp sensor
 
   if (!skintempSensor.getAddress(thermometerAddress, 0)){
-    Serial.println("Unable to find skin temp sensor.");
+    Serial.println(F("Unable to find skin temp sensor."));
     for(;;);
   }
   else {
-    Serial.print("Skin temp address: "); 
+    Serial.print(F("Skin temp address: ")); 
     //printAddress(thermometerAddress); //Print the address of the sensor in serial.
     Serial.println();
   }
   skintempSensor.setResolution(thermometerAddress, 11);      // set the temperature resolution (9-12)
   if (!pox.begin()) {
-        Serial.println("FAILED");
+        Serial.println(F("FAILED"));
         for(;;);
   } 
   else {
-        Serial.println("SUCCESS");
+        Serial.println(F("SUCCESS"));
     }
   pox.setIRLedCurrent(MAX30100_LED_CURR_7_6MA); //Current into pox  
 
@@ -113,5 +115,6 @@ void loop() {
   sensorRead.update(); 
   displayUpdate.update();
   babyStats.update();
+  errorLEDs.update();
 }
 

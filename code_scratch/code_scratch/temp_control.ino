@@ -57,9 +57,9 @@ void HighHeat(){
   analogWrite(TEMP_PID,0); //PID OFF HEATING PADS ON
   digitalWrite(heating, LOW);  
   digitalWrite(cooling, LOW);
-  digitalWrite(padHeat,HIGH);
-
+  digitalWrite(padHeat, HIGH);
 }
+
 void humidityControl() {
   // If the humidity is below 73%, turn on the humidifier and set the humidifying flag to true
   if (humidity < 73) {
@@ -72,9 +72,6 @@ void humidityControl() {
     humidifying = false;
   }
 }
-
-
-
 
 /* //Bang-bang method :(
 // Basic temp control - Test vs PID <- choose better

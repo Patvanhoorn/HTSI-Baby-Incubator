@@ -3,12 +3,20 @@
 //I beg
 //PLEASE
 //(Real reason is because itss funny xx)
-float calculateAverage(float arr[]) {
+float calculateAverage(float arr[]) { //For floats
   int sum = 0;
   for (int i = 0; i < 10; i++) {
     sum += arr[i];
   }
   return (float)sum / 10;
+} 
+
+int calculateAverage2(int arr[]) { //For ints
+  int sum = 0;
+  for (int i = 0; i < 10; i++) {
+    sum += arr[i];
+  }
+  return (int)sum / 10;
 } 
 
 void readSensor(){
@@ -25,12 +33,12 @@ void readSensor(){
       if(DHTTempAV > temperature_ref - 0.5){ //Once we reach the desired operating temp, go back to PID control
       high_heat = false; 
       digitalWrite(padHeat,LOW);
-      Serial.println("Updating PID and Display");
+      //Serial.println(F("Updating PID and Display"));
       PID_control();
       }
       
     else{
-      Serial.println("Updating PID and Display");
+      //Serial.println(F("Updating PID and Display"));
       PID_control();
     }
     error_counter = 0; //Set the successive error count to 0
@@ -59,7 +67,7 @@ float* getDHTTempArray(int counter) { //Switch case to get the pointer to point 
       return NULL;
   }
 }
-float* getDHTHumidityArray(int counter) { //Switch case to get the pointer to point at the correct DHT array
+int* getDHTHumidityArray(int counter) { //Switch case to get the pointer to point at the correct DHT array
   switch (counter) {
     case 14:
       return DHT1humidity;
@@ -85,7 +93,7 @@ for (int counter = 14; counter < 19; counter++) { //14 15 16 17 18
   dht.begin();
   dht.temperature().getEvent(&event); 
   float* dhtTempArray = getDHTTempArray(counter); //Set the dhtTempArray pointer to the right Temperature DHT array
-  float* dhtHumidityArray = getDHTHumidityArray(counter); //Set the dhtHumidityArray pointer to the right Humidity array
+  int* dhtHumidityArray = getDHTHumidityArray(counter); //Set the dhtHumidityArray pointer to the right Humidity array
   /*Serial.print(("DHT")); //Printing for debugging
   Serial.print((counter - 13)); */
     if (isnan(event.temperature) | temperature <= 0) {
@@ -100,10 +108,11 @@ for (int counter = 14; counter < 19; counter++) { //14 15 16 17 18
       if(dhtTempArray[10] == 10){
         dhtTempArray[10]=0;
       }
-      /*Serial.print("      ");
+      /*Serial.print(F("      "));
       Serial.print(F("Temperature: "));
       Serial.print(temperature);
       Serial.println(F("°C")); */
+      
     }
     // Get humidity event and print its value if there is no error.
     dht.humidity().getEvent(&event);
@@ -128,12 +137,11 @@ for (int counter = 14; counter < 19; counter++) { //14 15 16 17 18
     } 
   }
 DHTTempAV =  calculateAverage(DHT1temp) + calculateAverage(DHT2temp) + calculateAverage(DHT3temp)+calculateAverage(DHT4temp) +calculateAverage(DHT5temp);
-DHTHumAV = calculateAverage(DHT1humidity)+calculateAverage(DHT2humidity)+calculateAverage(DHT3humidity)+calculateAverage(DHT4humidity)+calculateAverage(DHT5humidity);
+DHTHumAV = calculateAverage2(DHT1humidity)+calculateAverage2(DHT2humidity)+calculateAverage2(DHT3humidity)+calculateAverage2(DHT4humidity)+calculateAverage2(DHT5humidity);
 }
 
 void SkinTemp_Read(){
-  // Skin probe sensor reading
-  skintempSensor.requestTemperatures();
+  skintempSensor.requestTemperatures();   // Skin probe sensor reading
   skin_temperature = skintempSensor.getTempC(thermometerAddress);
   if (skin_temperature < -100){ //If we ever get below -100 degrees in reality the incubator is not the problem to concern ourselves with. 
     skin_error_counter = skin_error_counter + 1;

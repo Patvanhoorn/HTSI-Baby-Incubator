@@ -26,11 +26,11 @@ float DHT3temp[11] = {-10.0, -10.0, -10.0, -10.0, -10.0, -10.0, -10.0, -10.0, -1
 float DHT4temp[11] = {-10.0, -10.0, -10.0, -10.0, -10.0, -10.0, -10.0, -10.0, -10.0, -10.0,0};
 float DHT5temp[11] = {-10.0, -10.0, -10.0, -10.0, -10.0, -10.0, -10.0, -10.0, -10.0, -10.0,0};
 
-float DHT1humidity[11] = {50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0,0};
-float DHT2humidity[11] = {50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0,0};
-float DHT3humidity[11] = {50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0,0};
-float DHT4humidity[11] = {50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0,0};
-float DHT5humidity[11] = {50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0,0};
+int DHT1humidity[11] = {50, 50, 50, 50, 50, 50, 50, 50, 50, 50,0}; //Saves space but having ints rather than floats
+int DHT2humidity[11] = {50, 50, 50, 50, 50, 50, 50, 50, 50, 50,0};
+int DHT3humidity[11] = {50, 50, 50, 50, 50, 50, 50, 50, 50, 50,0};
+int DHT4humidity[11] = {50, 50, 50, 50, 50, 50, 50, 50, 50, 50,0};
+int DHT5humidity[11] = {50, 50, 50, 50, 50, 50, 50, 50, 50, 50,0};
 
 float heartbeat[11] = {0,0,0,0,0,0,0,0,0,0,0};
 float spo2[11]= {0,0,0,0,0,0,0,0,0,0,0};
@@ -39,7 +39,7 @@ float spo2av;
 
 
 float DHTTempAV;
-float DHTHumAV;
+int DHTHumAV;
 
 float Skintemp[11] = {-10.0, -10.0, -10.0, -10.0, -10.0, -10.0, -10.0, -10.0, -10.0, -10.0,0};
 
@@ -91,16 +91,27 @@ int PID_values_fixed =0;
 //For register
 byte leds = 0;
 
+//Sensor Functions Declaration
+float calculateAverage(float arr[]);
+int calculateAverage2(int arr[]);
+void readSensor();
 void DHT_Read();
 void SkinTemp_Read();
+void oximeter();
+//Temp Control 
+void PID_control();
 void heat();
 void cool();
-void PID_control();
-void readSensor();
-void display_error();
-void display_update();
-void register_update();
-void humidityControl();
 void HighHeat();
-float calculateAverage(float arr[]);
-void oximeter();
+void humidityControl();
+//Display Update
+void display_update();
+void display_DHTerror();
+void display_dsberror();
+void display_tempcheck();
+void display_skintempcheck();
+void display_humdidtyerror();
+void display_heartcheck();
+void display_o2check();
+void display_roomTemp();
+void register_update();
