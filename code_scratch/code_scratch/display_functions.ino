@@ -166,8 +166,8 @@ leds = B00000001;
     leds |= B00000100;
     display_o2check();
   }
-  float maxVal = max(max(max(DHT1temp, DHT2temp), DHT3temp), max(DHT4temp, DHT5temp));
-  float minVal = min(min(min(DHT1temp, DHT2temp), DHT3temp), min(DHT4temp, DHT5temp));
+  float maxVal = max(max(max(calculateAverage(DHT1temp), calculateAverage(DHT2temp)), calculateAverage(DHT3temp)), max(calculateAverage(DHT4temp), calculateAverage(DHT5temp)));
+  float minVal = min(min(min(calculateAverage(DHT1temp), calculateAverage(DHT2temp)), calculateAverage(DHT3temp)), min(calculateAverage(DHT4temp), calculateAverage(DHT5temp)));
   if(maxVal - minVal < 5){
     leds |= B00000100;
     display_roomTemp();
