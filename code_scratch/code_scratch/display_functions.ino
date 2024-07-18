@@ -36,70 +36,143 @@ void display_update(){
   display.setCursor(0, 40);  
   int waterAvaliable = digitalRead(waterlevel);
   if (waterAvaliable == LOW) {
-    display.println("Liquid detected");
+    display.println("");
   } 
   else {
     display.println("No liquid detected");
   }
 
-
-  
-  
-  
   display.display(); 
 }
 
-void display_error(){   //Called in readSensor()
+void display_DHTerror(){   //Called in readSensor() - Occurs if DHT sensors fail to work
   display2.display(); 
-  display2.fillRect(0, 0, SCREEN_WIDTH, 10, SSD1306_BLACK); //Black out the 1st line    
+  display2.fillRect(0, 0, SCREEN_WIDTH, 8, SSD1306_BLACK); //Black out the 1st line    
   display2.setTextSize(1);      // Normal 1:1 pixel scale 
   display2.setTextColor(SSD1306_WHITE); // Draw white text 
-
   display2.setCursor(0, 0);  //1st line
-  display2.println("Check temperature sensor(DHT22)");
+  display2.println("!!DHTs!!");
   display2.display();
-  //Possibly add a buzzer here
 }
-void display_dsberror(){      //Called in SkinTemp_Read()  
+void display_dsberror(){      //Called in register_update()
   display2.display(); 
-  display2.fillRect(0, 10, SCREEN_WIDTH, 10, SSD1306_BLACK); //Black out the 2nd line    
+  display2.fillRect(0, 8, SCREEN_WIDTH,8, SSD1306_BLACK); //Black out the 2nd line    
   display2.setTextSize(1);      // Normal 1:1 pixel scale 
   display2.setTextColor(SSD1306_WHITE); // Draw white text 
-  display2.setCursor(0, 10);     // Start at top-left corner 
+  display2.setCursor(0, 8);     // Start at top-left corner 
   display2.println("!!Skin Probe!!");
   display2.display();
-  //Possibly add a buzzer here
 }
-void display_temperror(){ //Called in register_update()
+//Water sensor error needs to be added 
+//Oximeter sensor error needs to be added
+
+void display_tempcheck(){ //Called in register_update()  - Heating check
   display2.display(); 
-  display2.fillRect(0, 20, SCREEN_WIDTH, 10, SSD1306_BLACK); //Black out the 2nd line    
+  display2.fillRect(0, 16, SCREEN_WIDTH, 8, SSD1306_BLACK); //Black out the 2nd line    
   display2.setTextSize(1);      // Normal 1:1 pixel scale 
   display2.setTextColor(SSD1306_WHITE); // Draw white text 
-  display2.setCursor(0, 20);     // Start at top-left corner 
-  display2.println("!!Temperature Error!!");
-  display2.display();
-}
-void display_humidityerror(){
-  display2.display(); 
-  display2.fillRect(0, 30, SCREEN_WIDTH, 10, SSD1306_BLACK); //Black out the 2nd line    
-  display2.setTextSize(1);      // Normal 1:1 pixel scale 
-  display2.setTextColor(SSD1306_WHITE); // Draw white text 
-  display2.setCursor(0, 20);     // Start at top-left corner 
-  display2.println("!!Humidity Error!!");
+  display2.setCursor(0, 16);     // Start at top-left corner 
+  display2.println("!Check Air Temp");
   display2.display();
 }
 
+void display_skintempcheck(){ //Called in register_update()  - Heating check
+  display2.display(); 
+  display2.fillRect(0, 24, SCREEN_WIDTH, 8, SSD1306_BLACK); //Black out the 2nd line    
+  display2.setTextSize(1);      // Normal 1:1 pixel scale 
+  display2.setTextColor(SSD1306_WHITE); // Draw white text 
+  display2.setCursor(0, 24);     // Start at top-left corner 
+  display2.println("!Check Skin Probe");
+  display2.display();
+}
+
+void display_humidityerror(){ //Occurs when humidity values are out of bounds - Sensor error
+  display2.display(); 
+  display2.fillRect(0, 32, SCREEN_WIDTH, 8, SSD1306_BLACK); //Black out the 2nd line    
+  display2.setTextSize(1);      // Normal 1:1 pixel scale 
+  display2.setTextColor(SSD1306_WHITE); // Draw white text 
+  display2.setCursor(0, 32);     // Start at top-left corner 
+  display2.println("!Check Humidity");
+  display2.display();
+}
+
+void display_heartcheck(){
+  display2.display(); 
+  display2.fillRect(0, 40, SCREEN_WIDTH, 8, SSD1306_BLACK); //Black out the 2nd line    
+  display2.setTextSize(1);      // Normal 1:1 pixel scale 
+  display2.setTextColor(SSD1306_WHITE); // Draw white text 
+  display2.setCursor(0, 40);     // Start at top-left corner 
+  display2.println("!Check Heartbeat");
+  display2.display();
+}
+
+void display_o2check(){
+  display2.display(); 
+  display2.fillRect(0, 48, SCREEN_WIDTH, 8, SSD1306_BLACK); //Black out the 2nd line    
+  display2.setTextSize(1);      // Normal 1:1 pixel scale 
+  display2.setTextColor(SSD1306_WHITE); // Draw white text 
+  display2.setCursor(0, 48);     // Start at top-left corner 
+  display2.println("!Check Baby");
+  display2.display();
+}
+
+void display_roomTemp(){
+  display2.display(); 
+  display2.fillRect(0, 56, SCREEN_WIDTH, 8, SSD1306_BLACK); //Black out the 2nd line    
+  display2.setTextSize(1);      // Normal 1:1 pixel scale 
+  display2.setTextColor(SSD1306_WHITE); // Draw white text 
+  display2.setCursor(0, 56);     // Start at top-left corner 
+  display2.println("!Check airflow");
+  display2.display();
+}
 void register_update(){ //Called in register_update()
+//Possibly add a buzzer here activate the buzzer of either bit 1 or 2 is 1
 leds = B00000001;
-  if ( temperature >= 39 | temperature <= 36){
+//Buzzer B00001000
+//Yellow led B00000100
+//Red led B00000010
+//On led B00000001
+  if (error_counter >= 5){ //If the error in the DHT has occured 5 or more times in a row, display an error.
+      display_DHTerror();
       leds |= B00000010;
-     display_temperror();
+  }
+  if (skin_error_counter >= 5){
+      display_dsberror();
+      leds |= B00000010;
+  }
+//Water sensor error needs to be added 
+//Oximeter sensor error needs to be added
+  if ( DHTTempAV >= temperature_ref +2  || DHTTempAV <= temperature_ref - 2){ //If temperature deviates from the reference +- 2 degrees set a warning
+     display_tempcheck();
+     leds |= B00000100;
+  }
 
-    }
-  if (humidity >= 100 | humidity <= 0){
-    leds |= B00000010;
+  if (calculateAverage(Skintemp) >= 37.5 || calculateAverage(Skintemp) <=35.5){
+    display_skintempcheck();
+    leds |= B00000100;
+  }
+  if (DHTHumAV >= 80 || DHTHumAV <= 70){
+    leds |= B00000100;
     display_humidityerror();
   } 
+
+  if(calculateAverage(heartbeat) < 50 || calculateAverage(heartbeat) >110){ //For adults testing
+ // if(calculateAverage(heartbeat) < 90 || calculateAverage(heartbeat) >200){ //For babies 
+    leds |= B00000100;
+    display_heartcheck();
+  }
+ 
+  if(calculateAverage(spo2)<90){
+    leds |= B00000100;
+    display_o2check();
+  }
+  float maxVal = max(max(max(DHT1temp, DHT2temp), DHT3temp), max(DHT4temp, DHT5temp));
+  float minVal = min(min(min(DHT1temp, DHT2temp), DHT3temp), min(DHT4temp, DHT5temp));
+  if(maxVal - minVal < 5){
+    leds |= B00000100;
+    display_roomTemp();
+  }
+
 // if water level,skin temp,heartbeat,low oxygen... {leds |= B00000100;}
 
 //Send data over to register

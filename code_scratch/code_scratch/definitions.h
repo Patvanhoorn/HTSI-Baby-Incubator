@@ -53,7 +53,9 @@ float Skintemp[11] = {-10.0, -10.0, -10.0, -10.0, -10.0, -10.0, -10.0, -10.0, -1
 
 bool ds18b20error = false;
 bool dhterror = false; //Boolean check for whether data was read correctly or not
-int error_counter; //To count to sucessive errors of readings if it occurs
+int error_counter=0; //To count to sucessive errors of readings if it occurs
+int skin_error_counter=0;
+
 
 int humidity;
 float temperature;

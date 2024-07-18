@@ -39,11 +39,9 @@ void readSensor(){
   else{
     error_counter = error_counter + 1;
     dhterror = false;
-    if (error_counter >= 5){ //If the error has occured 5 or more times in a row, display an error.
-      display_error();
     }
   }
-}
+
 
 float* getDHTTempArray(int counter) { //Switch case to get the pointer to point at the correct DHT array
   switch (counter) {
@@ -138,14 +136,17 @@ void SkinTemp_Read(){
   skintempSensor.requestTemperatures();
   skin_temperature = skintempSensor.getTempC(thermometerAddress);
   if (skin_temperature < -100){ //If we ever get below -100 degrees in reality the incubator is not the problem to concern ourselves with. 
-    display_dsberror();
+    skin_error_counter = skin_error_counter + 1;
+    
   }
   else{
       int count = Skintemp[10];
+      skin_error_counter = 0;
       Skintemp[count] = skin_temperature ;
       Skintemp[10] = Skintemp[10] + 1;
       if (Skintemp[10] == 10){
         Skintemp[10] = 0;
+
       }
     }
   
