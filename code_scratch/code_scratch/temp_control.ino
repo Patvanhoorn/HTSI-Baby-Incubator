@@ -1,6 +1,7 @@
 //PID CONTROLLER
 void PID_control(){
-  PID_error = temperature_ref - temperature; //Calculate the error between the temp ref and the real value
+  air_temp_ref = 2*temperature_ref - skin_temperature - offset_temp; //Control air temperature based off the baby temperature in case it is overheating/underheating 
+  PID_error = air_temp_ref - temperature; //Calculate the error between the temp ref and the real value
   PID_p = kp * PID_error; //Calculate the P value
   if(-3 < PID_error < 3){ //Calculate the I value in a range on +-3
     PID_i = PID_i + (ki * PID_error);//Can add a dt term and close 
@@ -49,10 +50,28 @@ void cool(){
   //  display.println("Cooling ON");
 bool heater = false;
 bool cooler = true;
-
 }
 
 
+void HighHeat(){
+  analogWrite(TEMP_PID,0); //PID OFF HEATING PADS ON
+  digitalWrite(heating, LOW);  
+  digitalWrite(cooling, LOW);
+  digitalWrite(padHeat,HIGH);
+
+}
+void humidityControl() {
+  // If the humidity is below 73%, turn on the humidifier and set the humidifying flag to true
+  if (humidity < 73) {
+    digitalWrite(humidifier, HIGH);
+    humidifying = true;
+  }
+  // If the humidifier is currently running (humidifying == true) and the humidity is above 78%, turn off the humidifier and set the humidifying flag to false
+  else if (humidifying == true && humidity > 78) {
+    digitalWrite(humidifier, LOW);
+    humidifying = false;
+  }
+}
 
 
 
