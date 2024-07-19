@@ -4,19 +4,26 @@ Instructions as of 19/07/2024 (This process should remain the same however butto
 
 VScode: https://code.visualstudio.com/download git: https://git-scm.com/downloads
 
-You can login to git using the git command prompt.
+You can log in to git using the git command prompt.
 
-For the first person to copy over the code, intialise it into your own repository. Add all the participants into this repository (Search youtube/online how to do this - should be pretty easy)
+For the first person to copy over the code, initialise it into your repository. Add all the participants into this repository (Search YouTube/online how to do this - it should be pretty easy)
 
-Next, clone the repository onto your own device (On VScode, 3rd down on the left, the icon which looks like a branch, it will say clone repository). This should have downloaded all the code onto your device. Ensure you remember where download the file to make it easy for yourself! I recommend making a desktop file for ease.
+Next, clone the repository onto your device (On VScode, 3rd down on the left, the icon which looks like a branch, will say clone repository).
+It will prompt you to put the URL of the repository you want to copy in or log in to git to then choose to repository. It will only show the repository as an option if you are added to it as an editor.
 
-If you havent already, download the arduino IDE. (You can try to install the arduino add-on and use vscode exclusively however I find it easier just to code in arduino and use vscode to commit and pull code.) I recommened opening the code_scratch.ino file. This should open all the .ino arduino files and the .h file.
+This should have downloaded all the code onto your device. Ensure you remember where to download the file to make it easy for yourself! I recommend making a desktop file for ease.
+
+If you haven't already, download the Arduino IDE. (You can try to install the Arduino add-on and use vscode exclusively however I find it easier just to code in Arduino and use vscode to commit and pull code.) 
+Now open the code_scratch.ino file. This should open all the .ino Arduino files and the .h file.
 
 Now we need to install all the libraries and be able to run the code.
 
-Step 1: Click Select board -> Select other board and port (Its possible that the board already shows at this stage) -> Arduino Uno -> OK Step 2: Installing all the libraries required. (At this stage, if you have used Arduino before consider unistalling all your previous libraries to make it easier to manage this project).
+Step 1: Click Select board -> Select other board and port (It is possible that the board already shows at this stage) -> Arduino Uno -> OK 
 
-    On code_scratch.ino, next to all the #includes the library name author and version are stated. (Some modules have many libraries of specific names so be carful which you download or else it work!)
+Step 2: Installing all the libraries required. (At this stage, if you have used Arduino before consider uninstalling all your previous libraries to make it easier to manage this project).
+
+    On code_scratch.ino, next to all the #includes the library name author and version are stated.
+    Some modules have many libraries of specific names so be careful which you download or else it works!
     
     For example the line:
     #include "MAX30100_PulseOximeter.h" //Install <MAX30100_milan by OXullo v1.3.0>
@@ -24,6 +31,11 @@ Step 1: Click Select board -> Select other board and port (Its possible that the
     
     
     Install all dependencies whenever it prompts you to.
-    I have attempted to make it clear by adding a comment saying install then the information.
-    Install them using the arduino library manager. (3rd icon down - Looks like books)
-Step 3: There is none! Click the verify button (The tick) and hope no error occur.
+    I have attempted to clarify by adding a comment saying install then the information.
+    Install them using the Arduino library manager. (3rd icon down - Looks like books)
+    
+Step 3: There is none! Click the verify button (The tick) and hope no error occurs.
+
+
+You can now edit the code in Arduino IDE and commit push/pull using VSCode.
+You can now connect the whole board and upload code. COM port may need to be changed.
