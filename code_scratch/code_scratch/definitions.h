@@ -1,4 +1,4 @@
-
+//Pin 0,1 unused 
 #define padHeat 2     // Turns on the heating pads
 #define TEMP_PID 3    // control mosfet voltage
 #define fans 4        // relay 5, always on during heating or cooling
