@@ -1,20 +1,20 @@
 #include "definitions.h" //Importing the header file
-#include <Ticker.h> //For the tickers
+#include <Ticker.h> //Install <Ticker by Stefan Staub v4.4.0>
 #include <Adafruit_Sensor.h> 
 
-#include <OneWire.h> // OneWire by Jim Studt, Tom Pollard ... v2.3.8
-#include <DallasTemperature.h> //DallasTemperature by miles burton v.3.9.0 For the sensor remember to put a pull up resistor
+#include <OneWire.h> // Install <OneWire by Jim Studt, Tom Pollard ... v2.3.8>
+#include <DallasTemperature.h> //<DallasTemperature by miles burton v.3.9.0>  For the sensor remember to put a pull up resistor
 
-#include <DHT.h> //For the DHT snesors <DHT sensor library by Adafruit v1.4.6>
+#include <DHT.h> //Install <DHT sensor library by Adafruit v1.4.6>   for DHT sensors
 #include <DHT_U.h>
 
 // For OLED
 #include <SPI.h>
 #include <Wire.h>
-#include <Adafruit_GFX.h> //<Adafruit GFX Library by Adafruit v1.11.9>
-#include <Adafruit_SSD1306.h>// <Adafruit SSD1306 by Adafruit v2.5.10>
+#include <Adafruit_GFX.h> //Install <Adafruit GFX Library by Adafruit v1.11.9>
+#include <Adafruit_SSD1306.h>//Install  <Adafruit SSD1306 by Adafruit v2.5.10>
 
-#include "MAX30100_PulseOximeter.h" //<MAX30100_milan v1.3.0>
+#include "MAX30100_PulseOximeter.h" //Install <MAX30100_milan v1.3.0>
 
 Ticker sensorRead(readSensor, 2100);  //Ticker to avoid delay functions
 Ticker humControl(humidityControl, 4900); // changing led every 500ms
