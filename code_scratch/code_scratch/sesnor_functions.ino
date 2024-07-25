@@ -4,19 +4,24 @@
 //PLEASE
 //(Real reason is because itss funny xx)
 float calculateAverage(float arr[]) { //For floats
-  int sum = 0;
+  float sum = 0;
   for (int i = 0; i < 10; i++) {
+   //Serial.println(sum);
     sum += arr[i];
+  //  Serial.println(arr[i]);
+    
   }
-  return (float)sum / 10;
+ // Serial.print(F("Sum"));
+  //Serial.println(sum/10);
+  return sum / 10;
 } 
 
 int calculateAverage2(int arr[]) { //For ints
-  int sum = 0;
+  float sum = 0;
   for (int i = 0; i < 10; i++) {
     sum += arr[i];
   }
-  return (int)sum / 10;
+  return sum / 10;
 } 
 
 void readSensor(){
@@ -51,53 +56,22 @@ void readSensor(){
   }
 
 
-float* getDHTTempArray(int counter) { //Switch case to get the pointer to point at the correct DHT array
-  switch (counter) {
-    case 14:
-      return DHT1temp;
-    case 15:
-      return DHT2temp;
-    case 16:
-      return DHT3temp;
-    case 17:
-      return DHT4temp;
-    case 18:
-      return DHT5temp;
-    default:
-      return NULL;
-  }
-}
-int* getDHTHumidityArray(int counter) { //Switch case to get the pointer to point at the correct DHT array
-  switch (counter) {
-    case 14:
-      return DHT1humidity;
-    case 15:
-      return DHT2humidity;
-    case 16:
-      return DHT3humidity;
-    case 17:
-      return DHT4humidity;
-    case 18:
-      return DHT5humidity;
-    default:
-      return NULL;
-  }
-}
-
-void DHT_Read(){
-sensors_event_t event;
+/*void DHT_Read(){
 // Get temperature event and print its value if there is no error. //Need to add the list it appends to :)
-for (int counter = 14; counter < 19; counter++) { //14 15 16 17 18
-
-  DHT_Unified dht(counter, DHTTYPE);
+for (int pin_number = 22; pin_number < 25; pin_number++) { //22 23 24 25 
+  int temp_pin_number = pin_number;
+  DHT_Unified dht(temp_pin_number, DHTTYPE);
   dht.begin();
+  Serial.print("Pin:  ");
+  Serial.println(temp_pin_number);
+  sensors_event_t event;
   dht.temperature().getEvent(&event); 
-  float* dhtTempArray = getDHTTempArray(counter); //Set the dhtTempArray pointer to the right Temperature DHT array
-  int* dhtHumidityArray = getDHTHumidityArray(counter); //Set the dhtHumidityArray pointer to the right Humidity array
-  /*Serial.print(("DHT")); //Printing for debugging
-  Serial.print((counter - 13)); */
-    if (isnan(event.temperature) | temperature <= 0) {
-      //Serial.println(F("Error reading temperature!"));
+  dht.humidity().getEvent(&event);
+
+  float* dhtTempArray = getDHTTempArray(temp_pin_number); //Set the dhtTempArray pointer to the right Temperature DHT array
+  int* dhtHumidityArray = getDHTHumidityArray(temp_pin_number); //Set the dhtHumidityArray pointer to the right Humidity array 
+    if (isnan(event.temperature)) {
+      Serial.println(F("Error reading temperature!"));
       dhterror = true; //Set error bool
     }
     else {
@@ -108,16 +82,13 @@ for (int counter = 14; counter < 19; counter++) { //14 15 16 17 18
       if(dhtTempArray[10] == 10){
         dhtTempArray[10]=0;
       }
-      /*Serial.print(F("      "));
       Serial.print(F("Temperature: "));
       Serial.print(temperature);
-      Serial.println(F("°C")); */
-      
+      Serial.println(F("°C")); 
     }
     // Get humidity event and print its value if there is no error.
-    dht.humidity().getEvent(&event);
-    if (isnan(event.relative_humidity) | humidity <= 0 | humidity > 100) {
-      //Serial.println(F("Error reading humidity!"));
+    if (isnan(event.relative_humidity)) {
+      Serial.println(F("Error reading humidity!"));
       dhterror = true;
     }
     else {
@@ -129,16 +100,174 @@ for (int counter = 14; counter < 19; counter++) { //14 15 16 17 18
         dhtHumidityArray[10]=0;
       }
 
-      /*Serial.print(F("Humidity: "));
+      Serial.print(F("Humidity: "));
       Serial.print(humidity);
       Serial.println(F("%"));
-      Serial.print("HumTime: ");
-      Serial.println(Time); */
     } 
   }
-DHTTempAV =  calculateAverage(DHT1temp) + calculateAverage(DHT2temp) + calculateAverage(DHT3temp)+calculateAverage(DHT4temp) +calculateAverage(DHT5temp);
-DHTHumAV = calculateAverage2(DHT1humidity)+calculateAverage2(DHT2humidity)+calculateAverage2(DHT3humidity)+calculateAverage2(DHT4humidity)+calculateAverage2(DHT5humidity);
+DHTTempAV =  ((calculateAverage(DHT1temp) + calculateAverage(DHT2temp) + calculateAverage(DHT3temp)+calculateAverage(DHT4temp))/4);
+DHTHumAV = ((calculateAverage2(DHT1humidity)+calculateAverage2(DHT2humidity)+calculateAverage2(DHT3humidity)+calculateAverage2(DHT4humidity))/4);
 }
+*/
+void DHT_Read() {
+  // Delay between measurements.
+  int time_start = millis();
+  // Get temperature event and print its value.
+  sensors_event_t event;
+  sensors_event_t event2;
+  sensors_event_t event3;
+  sensors_event_t event4;
+  
+  dht.temperature().getEvent(&event);
+  dht2.temperature().getEvent(&event2);
+  dht3.temperature().getEvent(&event3);
+  dht4.temperature().getEvent(&event4);
+
+
+  if (isnan(event.temperature)) {
+    Serial.println(F("Error reading temperature 1!"));
+    dhterror = true; //Set error bool
+  }
+  else {
+    int count = DHT1temp[10];
+    float temperature = event.temperature; //Update temperature variable
+    DHT1temp[count] = temperature;
+    DHT1temp[10]=DHT1temp[10]+1;
+    if(DHT1temp[10] == 10){
+        DHT1temp[10]=0;
+      }
+    // Serial.print(F("Temperature 1: "));
+    // Serial.print(temperature);
+    // Serial.println(F("°C")); 
+  }
+  if (isnan(event2.temperature)) {
+    Serial.println(F("Error reading temperature 2!"));
+    dhterror = true;
+  }
+  else {
+    int count = DHT2temp[10];
+    float temperature = event2.temperature; //Update temperature variable
+    DHT2temp[count] = temperature;
+    DHT2temp[10]=DHT2temp[10]+1;
+    if(DHT2temp[10] == 10){
+        DHT2temp[10]=0;
+      }
+    // Serial.print(F("Temperature 2: "));
+    // Serial.print(temperature);
+    // Serial.println(F("°C")); 
+  }
+  if (isnan(event3.temperature)) {
+    Serial.println(F("Error reading temperature 3!"));
+    dhterror = true;
+  }
+  else {
+    int count = DHT3temp[10];
+    float temperature = event3.temperature; //Update temperature variable
+    DHT3temp[count] = temperature;
+    DHT3temp[10]=DHT3temp[10]+1;
+    if(DHT3temp[10] == 10){
+        DHT3temp[10]=0;
+      }
+    // Serial.print(F("Temperature 3: "));
+    // Serial.print(temperature);
+    // Serial.println(F("°C")); 
+  }
+  if (isnan(event4.temperature)) {
+    Serial.println(F("Error reading temperature 4!"));
+    dhterror = true;
+  }
+  else {
+    int count = DHT4temp[10];
+    float temperature = event4.temperature; //Update temperature variable
+    DHT4temp[count] = temperature;
+    DHT4temp[10]=DHT4temp[10]+1;
+    if(DHT4temp[10] == 10){
+        DHT4temp[10]=0;
+      }
+    // Serial.print(F("Temperature 4: "));
+    // Serial.print(temperature);
+    // Serial.println(F("°C")); 
+  }
+
+  dht.humidity().getEvent(&event);
+  dht2.humidity().getEvent(&event2);
+  dht3.humidity().getEvent(&event3);
+  dht4.humidity().getEvent(&event4);
+
+
+  // Get humidity event and print its value.
+  if (isnan(event.relative_humidity)) {
+    Serial.println(F("Error reading humidity 1!"));
+  }
+ else {
+      int count = DHT1humidity[10];
+      int humidity = event.relative_humidity;
+      DHT1humidity[count] = humidity ;
+      DHT1humidity[10]=DHT1humidity[10]+1;
+      if(DHT1humidity[10] == 10){
+        DHT1humidity[10]=0;
+      }
+      // Serial.print(F("Humidity 1  : "));
+      // Serial.print(humidity);
+      // Serial.println(F("%"));
+    } 
+  if (isnan(event2.relative_humidity)) {
+    Serial.println(F("Error reading humidity 2!"));
+  }
+ else {
+      int count = DHT2humidity[10];
+      int humidity = event2.relative_humidity;
+      DHT2humidity[count] = humidity ;
+      DHT2humidity[10]=DHT2humidity[10]+1;
+      if(DHT2humidity[10] == 10){
+        DHT2humidity[10]=0;
+      }
+      // Serial.print(F("Humidity 2: "));
+      // Serial.print(humidity);
+      // Serial.println(F("%"));
+    } 
+  if (isnan(event3.relative_humidity)) {
+    Serial.println(F("Error reading humidity 3!"));
+  }
+  else {
+      int count = DHT3humidity[10];
+      int humidity = event3.relative_humidity;
+      DHT3humidity[count] = humidity ;
+      DHT3humidity[10]=DHT3humidity[10]+1;
+      if(DHT3humidity[10] == 10){
+        DHT3humidity[10]=0;
+      }
+      // Serial.print(F("Humidity 3: "));
+      // Serial.print(humidity);
+      // Serial.println(F("%"));
+    } 
+  if (isnan(event4.relative_humidity)) {
+    Serial.println(F("Error reading humidity 4!"));
+  }
+  else {
+      int count = DHT4humidity[10];
+      int humidity = event4.relative_humidity;
+      DHT4humidity[count] = humidity ;
+      DHT4humidity[10]=DHT4humidity[10]+1;
+      if(DHT4humidity[10] == 10){
+        DHT4humidity[10]=0;
+      }
+      // Serial.print(F("Humidity 4: "));
+      // Serial.print(humidity);
+      // Serial.println(F("%"));
+    } 
+  DHTTempAV =  ((calculateAverage(DHT1temp) + calculateAverage(DHT2temp) + calculateAverage(DHT3temp)+calculateAverage(DHT4temp))/4);
+  DHTHumAV = ((calculateAverage2(DHT1humidity)+calculateAverage2(DHT2humidity)+calculateAverage2(DHT3humidity)+calculateAverage2(DHT4humidity))/4);
+
+  // Serial.print(F("Average temp "));
+  // Serial.println(DHTTempAV);
+  // Serial.print(F("Average humidity "));
+  // Serial.println(DHTHumAV);
+  int time_end = millis();
+  Serial.print("Time per read:  ");
+  Serial.println(time_end-time_start);
+}
+
 
 void SkinTemp_Read(){
   skintempSensor.requestTemperatures();   // Skin probe sensor reading
@@ -148,6 +277,7 @@ void SkinTemp_Read(){
     
   }
   else{
+      //Serial.println(skin_temperature);
       int count = Skintemp[10];
       skin_error_counter = 0;
       Skintemp[count] = skin_temperature ;
@@ -168,7 +298,9 @@ void SkinTemp_Read(){
 void oximeter(){
   pox.update();
   int count = heartbeat[10];
-  heartbeat[count] = pox.getHeartRate() ;
+/*  heartbeat[count] = pox.getHeartRate() ;
+  Serial.print(F("Heartbeat"));
+  Serial.println(pox.getHeartRate());
   spo2[count]= pox.getSpO2();
   heartbeat[10] = heartbeat[10] + 1;
   if (heartbeat[10] == 10){
@@ -176,5 +308,17 @@ void oximeter(){
   }
 heartbeatav = calculateAverage(heartbeat);
 spo2av = calculateAverage(spo2);
+Serial.print(F("Heartbeat:  "));
+Serial.println(heartbeatav);
+Serial.print(F("Spo2:  "));
+Serial.println(spo2av);*/
+    if (millis() - tsLastReport > REPORTING_PERIOD_MS) {
+        Serial.print("Heart rate:");
+        Serial.print(pox.getHeartRate());
+        Serial.print("bpm / SpO2:");
+        Serial.print(pox.getSpO2());
+        Serial.println("%");
 
+        tsLastReport = millis();
+    }
 }

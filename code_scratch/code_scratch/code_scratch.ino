@@ -30,12 +30,24 @@ OneWire oneWire(ONE_WIRE_BUS);        // create a oneWire instance to communicat
 DallasTemperature skintempSensor(&oneWire);  // pass the oneWire reference to Dallas Temperature
 PulseOximeter pox;
 
+uint32_t tsLastReport = 0;
+#define REPORTING_PERIOD_MS     1000
+
+DHT_Unified  dht(22, DHTTYPE);
+DHT_Unified  dht2(23, DHTTYPE);
+DHT_Unified  dht3(24, DHTTYPE);
+DHT_Unified  dht4(25, DHTTYPE);
 
 
 void setup() {
 //Setting up serial communication.
   Serial.begin(9600);
   Serial.println(F("Setting Up"));
+
+  dht.begin();
+  dht2.begin();
+  dht3.begin();
+  dht4.begin();
 
 // put your setup code here, to run once:
   pinMode(padHeat, OUTPUT);
@@ -58,12 +70,18 @@ void setup() {
   babyStats.start(); //Start the  ticker for oximeter updates
   errorLEDs.start(); //Start the register ticker
 
-  if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { // Address 0x3D for 128x64 SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
+
+  // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
+
+
+  if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
     Serial.println(F("SSD1306 big allocation failed"));
     for(;;); // Don't proceed, loop forever
   }
+  Serial.println(F("We are now here"));
+  
   if(!display2.begin(SSD1306_SWITCHCAPVCC, 0x3D)) { // Address 0x3D for 128x64 SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
-    Serial.println(F("SSD1306 big allocation failed"));
+    Serial.println(F("SSD1306 small allocation failed"));
     for(;;); // Don't proceed, loop forever
   }
 
@@ -76,21 +94,19 @@ void setup() {
     for(;;);
   }
   else {
-    Serial.print(F("Skin temp address: ")); 
+    Serial.print(F("Skin temp sensor found ")); 
     //printAddress(thermometerAddress); //Print the address of the sensor in serial.
-    Serial.println();
   }
   skintempSensor.setResolution(thermometerAddress, 11);      // set the temperature resolution (9-12)
-  if (!pox.begin()) {
-        Serial.println(F("FAILED"));
-        for(;;);
-  } 
-  else {
-        Serial.println(F("SUCCESS"));
-    }
-  pox.setIRLedCurrent(MAX30100_LED_CURR_7_6MA); //Current into pox  
-
-
+ 
+ 
+//  if (!pox.begin()) {
+ //       Serial.println(F("FAILED"));
+  //      for(;;);
+ // } 
+ // else {
+ //       Serial.println(F("SUCCESS"));
+ //   }
 
   display.clearDisplay();
   display.setTextSize(1);
@@ -98,23 +114,36 @@ void setup() {
   display2.clearDisplay();
   display2.setTextSize(1);
   display2.setTextColor(SSD1306_WHITE);
-
-
+  display_startup();
+  
    for (int i = 0; i < 10; i++) {
     DHT_Read();
     SkinTemp_Read();
-    oximeter();
-  }
-  delay(2000);  
+    //oximeter();
+   delay(2000);
+  } 
+  
+
+  HighHeat();
+  heat();
+
+  Serial.println("Entering main loop");
 }
 
 void loop() {
+  delay(2000);
+  display_update();
+ // analogWrite(TEMP_PID,255);
+  DHT_Read();
+  //oximeter();
+  SkinTemp_Read();
   // put your main code here, to run repeatedly:
-  //Add a time since last reading 
-  humControl.update();//Update ticker
-  sensorRead.update(); 
-  displayUpdate.update();
-  babyStats.update();
-  errorLEDs.update();
+
+
+  // humControl.update();//Update ticker
+  // sensorRead.update(); 
+  // displayUpdate.update();
+  // babyStats.update();
+  // errorLEDs.update();
 }
 

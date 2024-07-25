@@ -1,7 +1,7 @@
 //PID CONTROLLER
 void PID_control(){
   air_temp_ref = 2*temperature_ref - skin_temperature - offset_temp; //Control air temperature based off the baby temperature in case it is overheating/underheating 
-  PID_error = air_temp_ref - temperature; //Calculate the error between the temp ref and the real value
+  PID_error = air_temp_ref - DHTTempAV; //Calculate the error between the temp ref and the real value
   PID_p = kp * PID_error; //Calculate the P value
   if(-3 < PID_error < 3){ //Calculate the I value in a range on +-3
     PID_i = PID_i + (ki * PID_error);//Can add a dt term and close 
@@ -32,6 +32,10 @@ void PID_control(){
   display.println(PID_error);
   display.print("Analog value: ");
   display.println(PID_value);*/
+  Serial.print(F("Error: "));
+  Serial.println(PID_error);
+  Serial.print(F("Analog value: "));
+  Serial.println(PID_value);
 }
 
 void heat(){
@@ -39,6 +43,7 @@ void heat(){
   digitalWrite(cooling, LOW);
   digitalWrite(heating, HIGH);
   //display.println("Heating ON"); 
+  Serial.println(F("Heating On"));
   bool heater = true;
   bool cooler = false;
 }
@@ -48,6 +53,7 @@ void cool(){
   digitalWrite(heating, LOW); 
   digitalWrite(cooling, HIGH);
   //  display.println("Cooling ON");
+  Serial.print(F("Cooling On"));
 bool heater = false;
 bool cooler = true;
 }
@@ -55,9 +61,10 @@ bool cooler = true;
 
 void HighHeat(){
   analogWrite(TEMP_PID,0); //PID OFF HEATING PADS ON
-  digitalWrite(heating, LOW);  
-  digitalWrite(cooling, LOW);
+  //digitalWrite(heating, LOW);  
+  //digitalWrite(cooling, LOW);
   digitalWrite(padHeat, HIGH);
+  Serial.println(F("High Heating"));
 }
 
 void humidityControl() {
@@ -65,11 +72,13 @@ void humidityControl() {
   if (humidity < 73) {
     digitalWrite(humidifier, HIGH);
     humidifying = true;
+    Serial.print(F("Humidifier On"));
   }
   // If the humidifier is currently running (humidifying == true) and the humidity is above 78%, turn off the humidifier and set the humidifying flag to false
   else if (humidifying == true && humidity > 78) {
     digitalWrite(humidifier, LOW);
     humidifying = false;
+    Serial.print(F("Humidifier Off"));
   }
 }
 

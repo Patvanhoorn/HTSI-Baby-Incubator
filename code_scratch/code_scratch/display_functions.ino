@@ -3,46 +3,60 @@
 
 void display_update(){
 //Set the display up
-  display.display(); 
-  display.fillRect(0, 0, SCREEN_WIDTH, 50, SSD1306_BLACK); 
-  display.setTextSize(1);      // Normal 1:1 pixel scale 
-  display.setTextColor(SSD1306_WHITE); // Draw white text 
+ 
+ // display.fillRect(0, 0, SCREEN_WIDTH, 50, SSD1306_BLACK); 
+ // display.setTextSize(1);      // Normal 1:1 pixel scale 
+ // display.setTextColor(SSD1306_WHITE); // Draw white text 
   
-  display.setCursor(0, 0);     // Start at top-left corner 
-  display.print("Temperature: "); //Temperature on the 1st line
-  display.print(DHTTempAV);
-  display.drawCircle(111, 2, 1.75, WHITE);
-  display.println(" C");
+  // display.setCursor(0, 0);     // Start at top-left corner 
+  // display.print("Temperature: "); //Temperature on the 1st line
+  // display.print(DHTTempAV);
+  // display.drawCircle(111, 2, 1.75, WHITE);
+  // display.println(" C");
 
-  display.setCursor(0, 10);
-  display.print("Humidity: "); //Humidity on the 2nd line
-  display.print(DHTHumAV);
-  display.println("%");
+  Serial.print("Temperature: "); //Temperature on the 1st line
+  Serial.println(DHTTempAV);
+  
 
-  display.setCursor(0, 20);
-  display.print("Skin Temp: "); //Display skintemp on the 3rd line
-  display.print(calculateAverage(Skintemp));
-  display.drawCircle(111, 2, 1.75, WHITE);
-  display.println(" C");
+  // display.setCursor(0, 10);
+  // display.print("Humidity: "); //Humidity on the 2nd line
+  // display.print(DHTHumAV);
+  // display.println("%");
 
-  display.setCursor(0, 30);  
-  display.print("Heart: "); // Display heart rate and SpO2
-  display.print(calculateAverage(heartbeat));
-  display.print(" bpm, SpO2: ");
-  display.print(calculateAverage(spo2));
-  display.println("%");
+  Serial.print("Humidity: "); //Humidity on the 2nd line
+  Serial.println(DHTHumAV);
 
-  display.drawFastHLine(0, 39, SCREEN_WIDTH, WHITE);
-  display.setCursor(0, 40);  
-  int waterAvaliable = digitalRead(waterlevel);
+  // display.setCursor(0, 20);
+  // display.print("Skin Temp: "); //Display skintemp on the 3rd line
+  // display.print(calculateAverage(Skintemp));
+  // display.drawCircle(111, 2, 1.75, WHITE);
+  // display.println(" C");
+
+  Serial.print("Skin Temp: "); //Display skintemp on the 3rd line
+  Serial.println(calculateAverage(Skintemp));
+
+  // display.setCursor(0, 30);  
+  // display.print("Heart: "); // Display heart rate and SpO2
+  // display.print(calculateAverage(heartbeat));
+  // display.print(" bpm");
+  // display.setCursor(0, 40);  
+  // display.print("SpO2: ");
+  // display.print(calculateAverage(spo2));
+  // display.println("%");
+
+  // display.drawFastHLine(0, 49, SCREEN_WIDTH, WHITE);
+  // display.setCursor(0, 51);  
+   int waterAvaliable = digitalRead(waterlevel);
   if (waterAvaliable == LOW) {
-    display.println("");
+  //  display.println("");
+  Serial.println("Liquid found");
   } 
   else {
-    display.println("No liquid detected");
+  // display.println("No liquid detected");
+  Serial.println("No liquid detected");
   }
 
-  display.display(); 
+ // display.display(); 
 }
 
 void display_DHTerror(){   //Called in readSensor() - Occurs if DHT sensors fail to work
@@ -180,6 +194,19 @@ digitalWrite(LATCH_PIN, LOW);  //Latch off
 shiftOut(DATA_PIN, CLOCK_PIN, MSBFIRST, leds); //Write the data into the register
 digitalWrite(LATCH_PIN, HIGH); //Latch on
   
+}
+
+void display_startup(){
+  display.setCursor(0, 0);     // Start at top-left corner 
+  display.println("Big display");
+  display.println("Setting Up");
+  display.display();
+  display2.display();
+  display2.setCursor(0, 0);     // Start at top-left corner 
+  display2.println("Small display");
+  display2.println("Setting Up 2");
+  display2.display();
+
 }
 
 // void printAddress(DeviceAddress deviceAddress)

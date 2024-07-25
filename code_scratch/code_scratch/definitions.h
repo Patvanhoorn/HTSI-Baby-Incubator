@@ -6,19 +6,19 @@
 #define cooling 6     // relay 2  //Reverses peltier connections
 #define thermoregulation 7 // relay 3
 #define humidifier 8  // relay 4
-const int DATA_PIN = 9;  // Pin 9 of Arduino Uno (connected to SER pin of 74HC595)  Data Pin   Register Pin 14
-const int CLOCK_PIN = 10;  // Pin 10 of Arduino Uno (connected to SRCLK pin of 74HC595)  Clock Pin  Register Pin 11
+const int DATA_PIN = 10;  // Pin 9 of Arduino Uno (connected to SER pin of 74HC595)  Data Pin   Register Pin 14
+const int CLOCK_PIN = 9;  // Pin 10 of Arduino Uno (connected to SRCLK pin of 74HC595)  Clock Pin  Register Pin 11
 const int LATCH_PIN = 11;  // Pin 11 of Arduino Uno (connected to RCLK pin of 74HC595) Latch Pin Register Pin 12
 #define ONE_WIRE_BUS 12    // DS18B20 data wire is connected to input 12
 #define waterlevel 13  // always on
 
 #define DHTTYPE    DHT22
-int DHTPIN = 15;
-// #define DHTPIN1 14 DHTS attached from A0 to A
-// #define DHTPIN2 15
-// #define DHTPIN3 16
-// #define DHTPIN4 17
-// #define DHTPIN5 18
+int DHTPIN = 22;
+// #define DHTPIN1 22 DHTS attached from D22-26
+// #define DHTPIN2 23
+// #define DHTPIN3 24
+// #define DHTPIN4 25
+// #define DHTPIN5 26
 
 float DHT1temp[11] = {-10.0, -10.0, -10.0, -10.0, -10.0, -10.0, -10.0, -10.0, -10.0, -10.0,0}; //Last value in array is the counter number for the average. On setup, edit it 10 times
 float DHT2temp[11] = {-10.0, -10.0, -10.0, -10.0, -10.0, -10.0, -10.0, -10.0, -10.0, -10.0,0};
@@ -39,7 +39,7 @@ float spo2av;
 
 
 float DHTTempAV;
-int DHTHumAV;
+float DHTHumAV;
 
 float Skintemp[11] = {-10.0, -10.0, -10.0, -10.0, -10.0, -10.0, -10.0, -10.0, -10.0, -10.0,0};
 
@@ -58,7 +58,7 @@ int skin_error_counter=0;
 
 
 int humidity;
-float temperature;
+//float temperature;
 float skin_temperature;
 
 float air_temp_ref; //Temperature of the air based of the skin temp and reference temperature of the baby
@@ -115,3 +115,4 @@ void display_heartcheck();
 void display_o2check();
 void display_roomTemp();
 void register_update();
+void display_startup();
